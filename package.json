@@ -1,0 +1,18 @@
+{
+  "name": "fsjs-p8-sql-library-manager",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "pug": "^3.0.2",
+    "sequelize": "^6.30.0",
+    "sequelize-cli": "^6.6.0",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
