@@ -16,13 +16,14 @@ function asyncHandler(cb) {
 }
 
 
-
 /* GET home page. */
 router.get('/', asyncHandler(async function (req, res, next) {
   const books = await Book.findAll();
   // res.json(books);
   res.render("index", { title: "Books", books: books })
 }));
+
+
 
 
 /* GET  - Shows the full list of books */
@@ -32,6 +33,8 @@ router.get("/books", asyncHandler(async (req, res) => {
 }))
 
 
+
+
 /* GET - Show the create new book form  */
 router.get("/books/new", asyncHandler(async (req, res) => {
   const book = await Book.create(req.body)
@@ -39,12 +42,29 @@ router.get("/books/new", asyncHandler(async (req, res) => {
 
 }))
 
+
 /* POST- New book to the database */
 router.post("/books/new", asyncHandler(async (req, res) => {
-  // const book = await Book.create(req.body);
-  // console.log(req.body);
-  // res.redirect("/new-book/")
+  let book;
+
+  try {
+
+    book = await Book.create(req.body);
+    res.redirect("new-book")
+
+  } catch (error) {
+
+    if (error.name === "SequelizeValidationError") {
+      book = await Book.build(req.body);
+      res.redirect("books/new", { book: book, errors: error.error, title: "New Book" })
+
+    } else {
+      throw error
+    }
+  }
+
 }))
+
 
 /*GET - Shows book detail form */
 router.get("/books/:id", asyncHandler(async (req, res) => {
@@ -54,11 +74,10 @@ router.get("/books/:id", asyncHandler(async (req, res) => {
     res.render("new-book", { book: book, title: "New Book" });
   } else {
     res.sendStatus(404);
-
   }
-
-
 }))
+
+
 
 /*POST - Update book info in the database */
 router.post("/books/:id", asyncHandler(async (req, res) => {
@@ -71,8 +90,10 @@ router.post("/books/:id", asyncHandler(async (req, res) => {
   } else {
     res.sendStatus(404);
   }
-
 }))
+
+
+
 
 /*POST - Deletes a book */
 router.post("/books/:id/delete", asyncHandler(async (req, res) => {
