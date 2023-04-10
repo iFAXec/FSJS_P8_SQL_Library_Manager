@@ -26,7 +26,6 @@ router.get('/', asyncHandler(async function (req, res, next) {
 
 
 
-/* GET  - Shows the full list of books */
 router.get("/books", asyncHandler(async (req, res) => {
   const books = await Book.findAll({ order: [["id", "DESC"]] })//FIXME - id isn't working
   res.render("index", { title: "Books", books: books, });
