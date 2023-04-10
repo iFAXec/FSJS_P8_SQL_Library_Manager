@@ -21,46 +21,69 @@ function asyncHandler(cb) {
 router.get('/', asyncHandler(async function (req, res, next) {
   const books = await Book.findAll();
   // res.json(books);
-  res.render("index", { books: books, title: "Books" })
+  res.render("index", { title: "Books", books: books })
 }));
 
 
 /* GET  - Shows the full list of books */
 router.get("/books", asyncHandler(async (req, res) => {
-  const books = await Book.findAll({ order: [["id", "DESC"]] })
-  res.render("index", { books: books, title: "Books" });
+  const books = await Book.findAll({ order: [["id", "DESC"]] })//FIXME - id isn't working
+  res.render("index", { title: "Books", books: books, });
 }))
-
 
 
 /* GET - Show the create new book form  */
 router.get("/books/new", asyncHandler(async (req, res) => {
   const book = await Book.create(req.body)
-  res.render();
+  res.render("new-book", { title: " New Book", book: book });
 
 }))
 
 /* POST- New book to the database */
 router.post("/books/new", asyncHandler(async (req, res) => {
-  const book = await Book.create(req.body);
+  // const book = await Book.create(req.body);
   // console.log(req.body);
-  res.redirect("/new-book/")
+  // res.redirect("/new-book/")
 }))
 
 /*GET - Shows book detail form */
 router.get("/books/:id", asyncHandler(async (req, res) => {
-  const book = await Book.findByPk(req.parms.id)
-  res.render("books/show", { book: book, title: "New Book" })
+  const book = await Book.findByPk(req.params.id);
+
+  if (book) {
+    res.render("new-book", { book: book, title: "New Book" });
+  } else {
+    res.sendStatus(404);
+
+  }
+
 
 }))
 
 /*POST - Update book info in the database */
 router.post("/books/:id", asyncHandler(async (req, res) => {
 
+  const book = await Book.findByPk(req.params.id);
+
+  if (book) {
+    await book.update(req.body);
+    res.render("update-book" + book.id);
+  } else {
+    res.sendStatus(404);
+  }
+
 }))
 
 /*POST - Deletes a book */
 router.post("/books/:id/delete", asyncHandler(async (req, res) => {
+  const book = await Book.findByPk(req.params.id);
+
+  if (book) {
+    await book.destroy();
+    res.redirect("/books");
+  } else {
+    res.sendStatus(404);
+  }
 
 }))
 
