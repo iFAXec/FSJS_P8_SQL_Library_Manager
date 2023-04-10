@@ -36,9 +36,7 @@ router.get("/books", asyncHandler(async (req, res) => {
 
 /* GET - Show the create new book form  */
 router.get("/books/new", asyncHandler(async (req, res) => {
-  const book = await Book.create(req.body)
-  res.render("new-book", { title: " New Book", book: book });
-
+  res.render("new-book");
 }))
 
 
