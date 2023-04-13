@@ -19,19 +19,16 @@ function asyncHandler(cb) {
 /* GET home page. */
 router.get('/', asyncHandler(async function (req, res, next) {
   const books = await Book.findAll();
+  console.log('books :', books);
   // res.json(books);
   res.render("index", { title: "Books", books: books })
 }));
-
-
 
 
 router.get("/books", asyncHandler(async (req, res) => {
   const books = await Book.findAll({ order: [["id", "DESC"]] })//FIXME - id isn't working
   res.render("index", { title: "Books", books: books, });
 }))
-
-
 
 
 /* GET - Show the create new book form  */
