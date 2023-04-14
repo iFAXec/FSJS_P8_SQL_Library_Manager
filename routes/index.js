@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const { Book } = require("../models");
+const { Op } = require("sequelize");
 
 
 /* handler function to wrap each route */
@@ -24,11 +25,29 @@ router.get('/', asyncHandler(async function (req, res, next) {
   res.render("index", { title: "Books", books: books })
 }));
 
+router.get("/", asyncHandler(async (req, res, next) => {
+  const { q } = req.query;
+  let search = {};
+  if (q) {
+    search = {
+      [Op.or]: [
+        { title: { [Op.iLike]: `%${q}%` } },
+        { author: { [Op.iLike]: `%${q}%` } },
+        { genre: { [Op.iLike]: `%${q}%` } },
+        { year: { [Op.iLike]: `%${q}%` } },
+      ],
+    };
+    const books = await Book.findAll({ where: search });
+    res.render("index", { books, search: q });
+  }
+})),
 
-router.get("/books", asyncHandler(async (req, res) => {
-  const books = await Book.findAll({ order: [["id", "DESC"]] })//FIXME - id isn't working
-  res.render("index", { title: "Books", books: books, });
-}))
+
+
+  router.get("/books", asyncHandler(async (req, res) => {
+    const books = await Book.findAll({ order: [["id", "DESC"]] })
+    res.render("index", { title: "Books", books: books, });
+  }))
 
 
 /* GET - Show the create new book form  */
@@ -44,13 +63,13 @@ router.post("/books/new", asyncHandler(async (req, res) => {
   try {
 
     book = await Book.create(req.body);
-    res.redirect("new-book")
+    res.redirect("/");
 
   } catch (error) {
 
     if (error.name === "SequelizeValidationError") {
       book = await Book.build(req.body);
-      res.redirect("books/new", { book: book, errors: error.error, title: "New Book" })
+      res.render("form-error", { book: book, errors: error.error, title: "New Book" })
 
     } else {
       throw error
@@ -63,9 +82,10 @@ router.post("/books/new", asyncHandler(async (req, res) => {
 /*GET - Shows book detail form */
 router.get("/books/:id", asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id);
+  console.log('book :', book);
 
   if (book) {
-    res.render("new-book", { book: book, title: "New Book" });
+    res.render("update-book", { book: book, title: "Update Book" });
   } else {
     res.sendStatus(404);
   }
@@ -75,7 +95,6 @@ router.get("/books/:id", asyncHandler(async (req, res) => {
 
 /*POST - Update book info in the database */
 router.post("/books/:id", asyncHandler(async (req, res) => {
-
   const book = await Book.findByPk(req.params.id);
 
   if (book) {

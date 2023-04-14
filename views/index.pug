@@ -4,6 +4,10 @@ block content
   h1= title
   p Welcome to the Public Library 
 
+  form(method="get") 
+    input(type="text", value=search, name="q", placeholder="Search a book...")
+    button(type="submit") Search 
+
   p
     
     a.button(href="/books/new") Create New Book
@@ -22,3 +26,4 @@ block content
          td #{book.author}
          td #{book.genre}
          td #{book.year}  
+         
