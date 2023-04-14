@@ -38,7 +38,10 @@ router.get("/", asyncHandler(async (req, res, next) => {
       ],
     };
     const books = await Book.findAll({ where: search });
-    res.render("index", { books, search: q });
+    res.render("search-book", { books, search: q });
+  } else {
+    const books = await Book.findAll();
+    res.render("index", { title: "Books", books: books })
   }
 })),
 
