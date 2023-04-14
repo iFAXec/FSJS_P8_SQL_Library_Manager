@@ -1,0 +1,28 @@
+extends layout
+
+block content
+
+a(class="button" href="/") Home
+
+table
+   thead 
+     tr 
+       th Title 
+       th Author 
+       th Genre 
+       th Year 
+   tbody
+     if books.length 
+       each book in books
+         tr 
+           td 
+             a(href="/books/" + book.id) #{book.title}
+           td #{book.author}
+           td #{book.genre}
+           td #{book.year}  
+     else     
+         tr
+           td(colspan="4") No results found for `#{search}` 
+         
+
+
