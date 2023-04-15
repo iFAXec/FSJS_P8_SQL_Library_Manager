@@ -6,10 +6,9 @@ block content
 
   form(method="get") 
     input(type="text", value=search, name="q", placeholder="Search a book...")
-    button(type="submit") Search 
+    button(type="submit", style= "margin-left:20px; padding:10px;") Search 
 
-  p
-    
+  p    
     a.button(href="/books/new") Create New Book
   table
     thead 
@@ -25,5 +24,16 @@ block content
             a(href="/books/" + book.id) #{book.title}
           td #{book.author}
           td #{book.genre}
-          td #{book.year} 
+          td #{book.year}
+
+  if (totalPages > 1)
+    div.pagination 
+      ul 
+        li(class=(currentPage === 1 ? "disabled": ""))
+          a(href=`?page=${prevPage}&limit=${limit}&q=${search}`) Previous
+        each page in pages 
+          li(class=(page===currentPage? "active": ""))   
+            a(href=`?page=${page}&limit=${limit}&q=${search}`)= page 
+        li(class=(currentPage === totalPages ? "disabled": ""))
+          a(href=`?page=${nextPage}&limit=${limit}&q=${search}`) Next
           

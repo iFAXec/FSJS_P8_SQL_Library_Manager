@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const { Book } = require("../models");
 const { Op } = require("sequelize");
+const paginate = require("express-paginate");
 
 
 /* handler function to wrap each route */
@@ -19,7 +20,9 @@ function asyncHandler(cb) {
 
 /* GET home page. */
 router.get("/", asyncHandler(async (req, res, next) => {
-  const { q } = req.query;
+  const { q, page = 1, limit = 10 } = req.query;
+
+
   let search = {};
   if (q) {
     search = {
@@ -30,13 +33,49 @@ router.get("/", asyncHandler(async (req, res, next) => {
         { year: { [Op.like]: `%${q}%` } },
       ],
     };
-    const books = await Book.findAll({ where: search });
-    res.render("search-book", { books, search: q });
+
+    try {
+
+      const offset = (page - 1) * limit;
+      const books = await Book.findAll({
+        where: search,
+        limit,
+        offset,
+      })
+
+
+      const count = await Book.count({
+        where: search
+      })
+
+      res.render("search-book", {
+        books,
+        search: q,
+        title: "Search List",
+        currentPage: page,
+        totalPages: Math.ceil(count / limit)
+      });
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error retrieving books");
+
+    }
+
   } else {
-    const books = await Book.findAll();
-    res.render("index", { title: "Books", books: books })
+
+    try {
+
+      const books = await Book.findAll();
+      res.render("index", { title: "Books", books: books })
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error retrieving books")
+    }
   }
 })),
+
 
 
   /*Get - Shows the full list of books */
