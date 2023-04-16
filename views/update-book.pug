@@ -3,7 +3,7 @@ extends layout
 block content
 
   h1 Update Book
-  form(action="/books/update-book/" + book.id, method="post")
+  form(action="", method="post")
     p 
       label(for="title") Title 
       input(name="title", type="text", id=`${book.title}`, value=`${book.title}`)
