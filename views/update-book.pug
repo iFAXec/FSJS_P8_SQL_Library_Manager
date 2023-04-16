@@ -5,16 +5,16 @@ block content
   h1 Update Book
   form(action="", method="post")
     p 
-      label(for="title") Title 
+      label(for=`${book.title}`) Title 
       input(name="title", type="text", id=`${book.title}`, value=`${book.title}`)
     p
-      label(for="author") Author 
+      label(for=`${book.author}`) Author 
       input( name="author", type="text", id=`${book.author}`, value=`${book.author}`)
     p
-      label(for="genre") Genre 
+      label(for=`${book.genre}`) Genre 
       input( name="genre", type="text", id=`${book.genre}`, value=`${book.genre}`)
     p
-      label(for="year") Year 
+      label(for=`${book.year}`) Year 
       input( name="year", type="text", id=`${book.year}`, value=`${book.year}`)
     p 
       input(type="submit", value="Update Book")
@@ -23,6 +23,8 @@ block content
       a(class="button", href="/books") Cancel   
     p 
       input(type="submit", value="Delete Book")
+
+  
 
 
 

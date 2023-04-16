@@ -26,14 +26,15 @@ block content
           td #{book.genre}
           td #{book.year}
 
-  if (totalPages > 1)
-    div.pagination 
-      ul 
-        li(class=(currentPage === 1 ? "disabled": ""))
-          a(href=`?page=${prevPage}&limit=${limit}&q=${search}`) Previous
-        each page in pages 
-          li(class=(page===currentPage? "active": ""))   
-            a(href=`?page=${page}&limit=${limit}&q=${search}`)= page 
-        li(class=(currentPage === totalPages ? "disabled": ""))
-          a(href=`?page=${nextPage}&limit=${limit}&q=${search}`) Next
+/*Pagination*/
+  //- if (totalPages > 1)
+  //-   div.pagination 
+  //-     ul 
+  //-       li(class=(currentPage === 1 ? "disabled": ""))
+  //-         a(href=`?page=${prevPage}&limit=${limit}&q=${search}`) Previous
+  //-       each page in pages 
+  //-         li(class=(page===currentPage? "active": ""))   
+  //-           a(href=`?page=${page}&limit=${limit}&q=${search}`)= page 
+  //-       li(class=(currentPage === totalPages ? "disabled": ""))
+  //-         a(href=`?page=${nextPage}&limit=${limit}&q=${search}`) Next
           
