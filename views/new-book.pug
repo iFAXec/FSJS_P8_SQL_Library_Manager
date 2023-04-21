@@ -3,8 +3,10 @@ extends layout
 block content
   h1 New Book
   form(action="/books/new", method="post")
-    if errors 
-      include form-error         
+    if(errors)
+      ul.error 
+        each error in errors
+          li= error.message              
     p 
       label(for="title") Title 
       input( name="title" type="text" id="title")

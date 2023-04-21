@@ -1,11 +1,8 @@
 extends layout
 
-block content
-
-  form(action="/books/new" method="post") 
+block content  
+  if(errors)
     h2.error Oooops!
-    ul.error 
-      li Title is required
-      li Author is required
-      
-      a.button(href="/") Cancel    
+    ul.error
+      each error in errors  
+        li= error.message
