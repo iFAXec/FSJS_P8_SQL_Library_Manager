@@ -4,6 +4,10 @@ block content
 
   h1 Update Book
   form(action="", method="post")
+    if(errors)
+      ul.error 
+        each error in errors
+          li= error.message  
     p 
       label(for=`${book.title}`) Title 
       input(name="title", type="text", id=`${book.title}`, value=`${book.title}`)
