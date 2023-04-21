@@ -39,66 +39,6 @@ router.get("/", asyncHandler(async (req, res, next) => {
   }
 })),
 
-  /*Pagination */
-  // /* GET home page. */
-  // router.get("/", asyncHandler(async (req, res, next) => {
-  //   const { q, page = 1, limit = 10 } = req.query;
-
-
-  //   let search = {};
-  //   if (q) {
-  //     search = {
-  //       [Op.or]: [
-  //         { title: { [Op.like]: `%${q}%` } },
-  //         { author: { [Op.like]: `%${q}%` } },
-  //         { genre: { [Op.like]: `%${q}%` } },
-  //         { year: { [Op.like]: `%${q}%` } },
-  //       ],
-  //     };
-
-  //     try {
-
-  //       const offset = (page - 1) * limit;
-  //       const books = await Book.findAll({
-  //         where: search,
-  //         limit,
-  //         offset,
-  //       })
-
-
-  //       const count = await Book.count({
-  //         where: search
-  //       })
-
-  //       res.render("search-book", {
-  //         books,
-  //         search: q,
-  //         title: "Search List",
-  //         currentPage: page,
-  //         totalPages: Math.ceil(count / limit)
-  //       });
-
-  //     } catch (error) {
-  //       console.error(error);
-  //       res.status(500).send("Error retrieving books");
-
-  //     }
-
-  //   } else {
-
-  //     try {
-
-  //       const books = await Book.findAll();
-  //       res.render("index", { title: "Books", books: books })
-
-  //     } catch (error) {
-  //       console.error(error);
-  //       res.status(500).send("Error retrieving books")
-  //     }
-  //   }
-  // })),
-
-
 
   /*Get - Shows the full list of books */
   router.get("/books", asyncHandler(async (req, res) => {
